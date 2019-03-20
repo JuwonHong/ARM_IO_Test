@@ -168,7 +168,7 @@ int main()
 		for(i = 0; i < 10; ++i) Delay(100000);
 		*/
 		
-		/*
+		
 		for(i=0; i<3; i++)
 			{
 			
@@ -178,8 +178,7 @@ int main()
 			rPIO_CODR_B=(LED1|LED2|LED3);
 			for(i = 0; i < 10; ++i) Delay(100000);
 
-			}
-		*/	
+			}	
 
 			for(i=2; i<=0; i--)
 			{
