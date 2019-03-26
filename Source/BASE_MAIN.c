@@ -176,20 +176,31 @@ unsigned char Result=0;
                    
 int main()
 {
-	int i = 0;
-	int count = 0;
-	int Z;
+	//int i = 0;
+	//int count = 0;
+	//int Z;
 	//int LEDNUM[3] = {LED1, LED2, LED3};
 	//count = LAST - FIRST;
-	int x = 0,y = 0;
-	int LED_CON[count] = {};
-	
+	//int x = 0,y = 0;
+	//int LED_CON[count] = {};
+	int n = 0;
 	
 	
   	Port_Setup();
+  	DBG_Init();
+  	
+  	Uart_Printf("Hello World\n\r");
+  	
+  	
 	
 	while(1) 
 	{
+		Uart_Printf("n = %d\n\r", n);
+	
+	
+		n++;
+	}	
+		
 		// LED off
 		
 		//rPIO_CODR_B=(LED1|LED2|LED3);
@@ -199,7 +210,7 @@ int main()
 
 		// LED on
 		//rPIO_SODR_B=(LED1|LED2|LED3);
-		
+		/*
 		if (n%2 == 0)
 		{
 	
@@ -217,7 +228,7 @@ int main()
 		
 		
 		
-		
+		*/
 		
 		
 		
