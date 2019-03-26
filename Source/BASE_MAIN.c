@@ -15,6 +15,9 @@
 #define LEFT	1
 #define RIGHT	2
 
+#define FIRST 28
+#define LAST 30
+
 unsigned int 	Key_Count=0,Pre_Key_Data=0;
 unsigned char Switch_Check(void);
 unsigned char Port_Flag=0;
@@ -96,6 +99,27 @@ void Port_Setup(void)
 //AT91F_PIO_ClearOutput(AT91C_BASE_PIOA, (1<<13));
 	
 }
+
+void LED_F_L(int a, int b, int c)
+{
+	int d = 0, e = 0;
+    
+	for(e=a; e<=b; d = d + c)
+		{
+				
+		
+		rPIO_SODR_B=(1<<e);
+		for(e = 0; e < 10; ++e) Delay(100000);
+
+		rPIO_CODR_B=(LED1|LED2|LED3);
+		for(e = 0; e < 10; ++e) Delay(100000);
+		
+		if(c>0 && d >0) break;
+		
+		}			
+
+}
+
 /*
 void Read_For_Setup_CMOS(void)
 {
@@ -153,46 +177,112 @@ unsigned char Result=0;
 int main()
 {
 	int i = 0;
-	int LED_CON[3] = {LED1, LED2, LED3};
+	int count = 0;
+	int Z;
+	//int LEDNUM[3] = {LED1, LED2, LED3};
+	//count = LAST - FIRST;
+	int x = 0,y = 0;
+	int LED_CON[count] = {};
+	
+	
+	
   	Port_Setup();
 	
 	while(1) 
 	{
-		/*
 		// LED off
-		rPIO_CODR_B=(LED1|LED2|LED3);
-		for(i = 0; i < 10; ++i) Delay(100000);
+		
+		//rPIO_CODR_B=(LED1|LED2|LED3);
+		
+		
+	
 
 		// LED on
-		rPIO_SODR_B=(LED1|LED2|LED3);
+		//rPIO_SODR_B=(LED1|LED2|LED3);
+		
+		if (n%2 == 0)
+		{
+	
+		LED_F_L(FIRST, LAST, 1);
+			
+		}
+		else
+		{
+	
+	
+		LED_F_L(LAST, FIRST, -1);
+				
+		}
+		n++;
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+			/*Z=LAST;
+			
+		
+			for(i=FIRST; i<=2*LAST; i++)
+			{
+			
+			rPIO_SODR_B=(1<<i);
+			for(i = 0; i < 10; ++i) Delay(100000);
+
+			rPIO_CODR_B=(LED1|LED2|LED3);
+			for(i = 0; i < 10; ++i) Delay(100000);
+			
+				if(LAST<i<=2*LAST)
+				{					
+					Z-=1;
+					rPIO_SODR_B=(1<<Z);
+					for(i = 0; i < 10; ++i) Delay(100000);
+
+					rPIO_CODR_B=(LED1|LED2|LED3);
+					for(i = 0; i < 10; ++i) Delay(100000);
+				}
+				
+			}
+			Z=LAST;
+			*/
+			/*	
+
+			for(i=LAST; i<=FIRST; i--)
+			{
+			
+			rPIO_SODR_B=(1<<i);
+			for(i = 0; i < 10; ++i) Delay(100000);
+
+			rPIO_CODR_B=(LED1|LED2|LED3);
+			for(i = 0; i < 10; ++i) Delay(100000);
+
+			}
+			
+			*/
+			/*
+		rPIO_SODR_B=(LED1);
 		for(i = 0; i < 10; ++i) Delay(100000);
+		rPIO_CODR_B=(LED1|LED2|LED3);
+		for(i = 0; i < 10; ++i) Delay(100000);
+		
+		rPIO_SODR_B=(LED2);
+		for(i = 0; i < 10; ++i) Delay(100000);
+		rPIO_CODR_B=(LED1|LED2|LED3);
+		for(i = 0; i < 10; ++i) Delay(100000);
+		
+		rPIO_SODR_B=(LED3);
+		for(i = 0; i < 10; ++i) Delay(100000);
+		rPIO_CODR_B=(LED1|LED2|LED3)
+		for(i = 0; i < 10; ++i) Delay(100000);
+		
 		*/
 		
 		
-		for(i=0; i<3; i++)
-			{
-			
-			rPIO_SODR_B=(LED_CON[i]);
-			for(i = 0; i < 10; ++i) Delay(100000);
-
-			rPIO_CODR_B=(LED1|LED2|LED3);
-			for(i = 0; i < 10; ++i) Delay(100000);
-
-			}	
-
-			for(i=2; i<=0; i--)
-			{
-			
-			rPIO_SODR_B=(LED_CON[i]);
-			for(i = 0; i < 10; ++i) Delay(100000);
-
-			rPIO_CODR_B=(LED1|LED2|LED3);
-			for(i = 0; i < 10; ++i) Delay(100000);
-
-			}		
-			
-			
-
-
-	}	
+	//}	
 }
+
+
