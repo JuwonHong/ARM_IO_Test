@@ -128,6 +128,7 @@ int Factorial(int Factorial_Num)
 int i;
 int Factorial_Result = 1;
 
+
 for(i = 1; i<= Factorial_Num; i++)
 {
 	Factorial_Result *= i;
@@ -135,6 +136,9 @@ for(i = 1; i<= Factorial_Num; i++)
 
 
 }
+
+
+
 return Factorial_Result;
 
 
@@ -218,6 +222,17 @@ int main()
 	while(1) 
 	{
 	
+		Uart_Printf("%d! = %d\n\r", n, Factorial(n) );
+		
+		for(i = 0; i < 10; ++i) 
+		{
+		Delay(100000);
+		
+		}
+		
+	n++;
+	
+	/*
 		for(n=0; n<=F_NUM; n++)
 		{
 		
@@ -229,6 +244,9 @@ int main()
 		}
 		
 		}
+		
+		*/
+		
 		
 	
 		//Uart_Printf("n = %d\n\r", n);
