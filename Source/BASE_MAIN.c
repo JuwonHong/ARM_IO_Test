@@ -18,6 +18,8 @@
 #define FIRST 28
 #define LAST 30
 
+#define F_NUM 5
+
 unsigned int 	Key_Count=0,Pre_Key_Data=0;
 unsigned char Switch_Check(void);
 unsigned char Port_Flag=0;
@@ -120,6 +122,24 @@ void LED_F_L(int a, int b, int c)
 
 }
 
+
+int Factorial(int Factorial_Num)
+{
+int i;
+int Factorial_Result = 1;
+
+for(i = 1; i<= Factorial_Num; i++)
+{
+	Factorial_Result *= i;
+	
+
+
+}
+return Factorial_Result;
+
+
+}
+
 /*
 void Read_For_Setup_CMOS(void)
 {
@@ -176,7 +196,7 @@ unsigned char Result=0;
                    
 int main()
 {
-	//int i = 0;
+	int i = 0;
 	//int count = 0;
 	//int Z;
 	//int LEDNUM[3] = {LED1, LED2, LED3};
@@ -184,6 +204,8 @@ int main()
 	//int x = 0,y = 0;
 	//int LED_CON[count] = {};
 	int n = 0;
+
+	
 	
 	
   	Port_Setup();
@@ -195,10 +217,24 @@ int main()
 	
 	while(1) 
 	{
-		Uart_Printf("n = %d\n\r", n);
+	
+		for(n=0; n<=F_NUM; n++)
+		{
+		
+		Uart_Printf("%d! = %d\n\r", n, Factorial(n) );
+		
+		for(i = 0; i < 10; ++i) 
+		{
+		Delay(100000);
+		}
+		
+		}
+		
+	
+		//Uart_Printf("n = %d\n\r", n);
 	
 	
-		n++;
+		//n++;
 	}	
 		
 		// LED off
