@@ -188,7 +188,7 @@ int main()
   	Port_Setup();
   	DBG_Init();
   	
-  	Uart_Printf("Hello World\n\r");
+  	Uart_Printf("Factorial Start \n\r");
   	
 
 	while(1) 
