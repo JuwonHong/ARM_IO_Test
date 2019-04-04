@@ -104,6 +104,65 @@ void Port_Setup(void)
 
 
 
+// PIT interrupt service routine
+volatile unsigned int ms_count = 0;
+void PIT_ISR()
+{
+	// Clear PITS
+	AT91F_PITGetPIVR(AT91C_BASE_PITC);
+
+	// increase ms_count
+	ms_count++;
+}
+
+
+
+// Initialize PIT and interrupt
+void PIT_initiailize()
+{
+	// enable peripheral clock for PIT
+	AT91F_PITC_CfgPMC();
+
+	// set the period to be every 1 msec in 48MHz
+	AT91F_PITInit(AT91C_BASE_PITC, 1, 48);
+
+	// PIV (Periodic Interval Value) = 3000 clocks = 1 msec
+	// MCK/16 = 48,000,000 / 16 = 3,000,000 clocks/sec
+	AT91F_PITSetPIV(AT91C_BASE_PITC, 3000-1);
+
+	// disable PIT periodic interrupt for now
+	AT91F_PITDisableInt(AT91C_BASE_PITC);
+
+	// interrupt handler initializatioin
+	AT91F_AIC_ConfigureIt(AT91C_BASE_AIC, AT91C_ID_SYS, 7, 1, PIT_ISR);
+
+	// enable the PIT interrupt
+	AT91F_AIC_EnableIt(AT91C_BASE_AIC, AT91C_ID_SYS);
+}
+
+
+
+// delay in ms by PIT interrupt
+void HW_delay_ms(unsigned int ms)
+{
+	// special case
+	if(ms == 0) return;
+
+	// start time
+	ms_count = 0;
+
+	// enable PIT interrupt
+	AT91F_PITEnableInt(AT91C_BASE_PITC);
+
+	// wait for ms
+	while(ms_count < ms);
+
+	// disable PIT interrupt
+	AT91F_PITDisableInt(AT91C_BASE_PITC);
+}
+
+
+
 
 int Factorial(int Factorial_Num)
 {
@@ -182,28 +241,55 @@ unsigned char Result=0;
                    
 int main()
 {
-	int i = 0;
-	int n = 0;
+	int time, cnt = 0;
+	int hour = 0, min = 0, sec = 0, msec = 0;
+	
 
   	Port_Setup();
+  	
   	DBG_Init();
+  	PIT_initiailize();
   	
-  	Uart_Printf("Factorial Start \n\r");
-  	
+Uart_Printf("START\n\r");
 
 	while(1) 
 	{
 	
-		Uart_Printf("%d! = %d\n\r", n, Factorial(n) );
-		
-		for(i = 0; i < 10; ++i) 
-		{
-		Delay(100000);
-		
-		}
-		
-	n++;
 	
+	
+		Uart_Printf("\r%02d : %02d : %02d : %02d", hour, min, sec, msec);
+		
+		HW_delay_ms(10);
+		msec++;
+		
+		
+		if(msec == 100)
+		{
+			sec += 1;
+			msec = 0;
+			rPIO_SODR_B=(LED1);
+			rPIO_CODR_B=(LED1);
+
+		}
+		if(sec == 60)
+		{
+			min += 1;
+			sec = 0;
+			rPIO_SODR_B=(LED2);
+			rPIO_CODR_B=(LED2);
+
+		}
+		if(min == 60)
+		{
+			hour += 1;
+			min = 0;
+			rPIO_SODR_B=(LED3);
+			rPIO_CODR_B=(LED3);
+
+		}
+		if (hour == 24) hour = 0;
+		
+		
 	}	
 		
 
