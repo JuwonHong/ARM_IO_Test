@@ -250,49 +250,48 @@ int main()
   	DBG_Init();
   	PIT_initiailize();
   	
-Uart_Printf("START\n\r");
+	Uart_Printf("START\n\r");
 
 	while(1) 
 	{
 	
 	
-	
-		Uart_Printf("\r%02d : %02d : %02d : %02d", hour, min, sec, msec);
-		
-		HW_delay_ms(10);
-		msec++;
-		
-		
 		if(msec == 100)
 		{
 			sec += 1;
 			msec = 0;
-			rPIO_SODR_B=(LED1);
-			rPIO_CODR_B=(LED1);
-
 		}
+		
 		if(sec == 60)
 		{
 			min += 1;
 			sec = 0;
-			rPIO_SODR_B=(LED2);
-			rPIO_CODR_B=(LED2);
-
 		}
+		
 		if(min == 60)
 		{
 			hour += 1;
 			min = 0;
-			rPIO_SODR_B=(LED3);
-			rPIO_CODR_B=(LED3);
-
 		}
-		if (hour == 24) hour = 0;
 		
+		if(hour == 24)
+		{
+			hour = 0;
+		}
+	
+		Uart_Printf("\r%02d : %02d : %02d : %02d", hour, min, sec, msec);
 		
+		rPIO_SODR_B=(LED3);
+		HW_delay_ms(5);
+		rPIO_CODR_B=(LED3);
+		HW_delay_ms(5);
+		
+		msec++;		
+
 	}	
 		
 
 }
 
-
+//rPIO_CODR_B=(LED3);
+//rPIO_SODR_B=(LED3);
