@@ -327,7 +327,7 @@ void Interrupt_setup()
 	//Enable AIC
 	//AT91F_AIC_EnableIt(AT91C_BASE_AIC, AT91C_ID_PIOA);
 	
-	
+//main 안에서 AT91F_AIC_ConfigureIt()     rAIC_SMR3 = negataiveedge or positiveedge   |  7;
 
 
 
@@ -346,9 +346,63 @@ void TC_initialize()
                                AT91C_TC_ASWTRG); 
 }
 
+// Interrupt service routine
+int waiting_mode = 0; // 0/1: waiting for echo to be on/off
+
+void ISR_ultra()
+{
+// when I was waiting for echo to be on,
+
+// and the rising edge (positive edge) interrupts
+
+if(waiting_mode == 0)
+{
+// (1) start the timer
+TC_Start(AT91C_BASE_TC0);
+// (2) change the source type to be the falling edge (negative edge)
+
+// (3) flip the waiting mode to be 1 (wait for echo off)
+
+}
+// when I was witing for echo to be off
+// and the falling edge (negative edge) interrupts
+else
+{
+// (1) stop the timer
+TC_Stop(AT91C_BASE_TC0);
+// (2) change the source type to be the right edge (positive edge)
+
+// (3) flip the waiting mode to be 0 (wait for echo on)
+
+// (4) calculate the distance from TC_CV and print via UART
+
+// (5) wait 60 ms
+
+// (6) trigger
+
+}
+}
+
+// Setup interrupt
+void Interrupt_Setup_ultra()
+{
+    // enable the PIT interrupt
+    AT91F_AIC_EnableIt(AT91C_BASE_AIC, AT91C_ID_PIOB );
+
+    // interrupt handler initializatioin
+    AT91F_AIC_ConfigureIt(AT91C_BASE_AIC,
+	AT91C_ID_PIOB,
+	7,
+	AT91C_AIC_SRCTYPE_POSITIVE_EDGE,
+	ISR_ultra);
+
+}
 //-----------------------------------------------------------------------------
 /// Main Procedure
 //-----------------------------------------------------------------------------
+                   
+                   
+                
                    
 int main()
 {
@@ -370,6 +424,17 @@ Port_Setup();
   // Timer counter
   TC_initialize();
 
+  Interrupt_Setup_ultra();
+
+
+	  while(true)
+	{
+	Uart_Printf("iter = %d: ", n);
+	n++;
+	HW_delay_10us(1); // wait 10 microsecond
+	}
+
+  /*
   while(1) 
   {
     Uart_Printf("iter = %d\n\r", n);
@@ -410,16 +475,18 @@ Port_Setup();
     // 타이머값
     // 1us = 58cm?
     
-    //Uart_Printf("\tStop TC_CV = %d /*clocks*/ cm = %lf us\n\r", AT91C_BASE_TC0->TC_CV, (double)(AT91C_BASE_TC0-> TC_CV) / 1.5 * 58.0);
+    //Uart_Printf("\tStop TC_CV = %d  cm = %lf us\n\r", AT91C_BASE_TC0->TC_CV, (double)(AT91C_BASE_TC0-> TC_CV) / 1.5 * 58.0);
 	
 	Uart_Printf("\t\rUltraSound = %lf [cm]", (double)(AT91C_BASE_TC0-> TC_CV) / (1.5 * 58.0));
 	
     rPIO_CODR_B=(LED1|LED2|LED3);
     HW_delay_10us(10000);
     n++;
+    
+   
   } 
   	
-  	
+  	 */
 		
 
 }
